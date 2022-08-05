@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}Dashboard Kontrak{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+
+<style>
+	.profile-pic{
+		max-width: 200px;
+		max-height:200px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<!-- Content Section -->
+<div class="main-pages">
+    <div class="container-fluid">
+            {% for message in messages %}
+                      <div class="alert alert-default-success alert-dismissible fade show" role="alert">
+                        <strong>{{message}}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-body">
+                        <h3 style="text-align: center"></h3>
+                        <img class="profile-pic" src="{{request.user.useradmin.profil_pic.url}}" >
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="card card-body">
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                        <input class="btn btn-primary" type="submit" name="Update Information">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+</div>
+
+<!-- end of Content Section -->
+{% endblock %}
