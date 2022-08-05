@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="{% static 'ui-template-1/' %}assets/app/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'ui-template-1/assets/icons/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'ui-template-1/dist/css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'ui-template-1/dist/css/index.css' %}" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 </head>
@@ -25,7 +25,7 @@
                 <button class="btn btn-default" id="btn-slider" type="button">
                     <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
                 </button>
-                <a class="navbar-brand me-auto text-danger" href="#">Info KR<span class="text-warning"> versi 1.0</span></a>
+                <a class="navbar-brand me-auto text-danger" href="#">InfoKR</a>
                 <ul class="nav ms-auto">
                     <li class="nav-item dropstart">
                         <a class="nav-link text-dark ps-3 pe-1" href="#" id="navbarDropdown" role="button"
@@ -66,30 +66,42 @@
             </div>
             <div class="slider-body px-1">
                 <nav class="nav flex-column">
-                    <a class="nav-link px-3 active" href="#">
-                        <i class="fa fa-home fa-lg box-icon" aria-hidden="true"></i>Home
+                    <a class="nav-link px-3 active" href="{% url 'dashboard' %}">
+                        <i class="fa fa-home fa-lg box-icon" aria-hidden="true"></i>Beranda
                     </a>
-                    <a class="nav-link px-3" href="#">
+                    <a class="nav-link px-3" href="{% url 'account_setting' %}">
                         <i class="fa fa-user fa-lg box-icon" aria-hidden="true"></i>Profil
                     </a>
                     <!-- Fitur Kendaraan-->
-                    <hr class="soft my-1 bg-white">
-                    <a class="nav-link px-3" href="#">
-                        <i class="fa fa-address-book fa-lg box-icon" aria-hidden="true"></i>Pegawai
-                    </a>
-                    <a class="nav-link px-3" href="#">
-                        <i class="fa fa-car fa-lg box-icon" aria-hidden="true"></i>Kendaraan
-                    </a>
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == 'superadmin' or group.name == 'admin' %}
+                            <hr class="soft my-1 bg-white">
+                            <a class="nav-link px-3" href="#">
+                                <i class="fa fa-address-book fa-lg box-icon" aria-hidden="true"></i>Pegawai
+                            </a>
+                            <a class="nav-link px-3" href="#">
+                                <i class="fa fa-car fa-lg box-icon" aria-hidden="true"></i>Kendaraan
+                            </a>
+                        {% endif %}
+                    {% endfor %}
                     <!-- Fitur Admin -->
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == 'superadmin' or group.name == 'admin' %}
+                            <hr class="soft my-1 bg-white">
+                            <a class="nav-link px-3" href="#">
+                                <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Pengguna
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for group in request.user.groups.all %}
+                        {% if group.name == 'superadmin' %}
+                            <a class="nav-link px-3" href="#">
+                                <i class="fa fa-file-text fa-lg box-icon" aria-hidden="true"></i>Admin System
+                            </a>
+                        {% endif %}
+                    {% endfor %}
                     <hr class="soft my-1 bg-white">
-                    <a class="nav-link px-3" href="#">
-                        <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Pengguna
-                    </a>
-                    <a class="nav-link px-3" href="#">
-                        <i class="fa fa-file-text fa-lg box-icon" aria-hidden="true"></i>Admin System
-                    </a>
-                    <hr class="soft my-1 bg-white">
-                    <a class="nav-link px-3" href="#">
+                    <a class="nav-link px-3" href="{% url 'logout' %}">
                         <i class="fa fa-sign-out fa-lg box-icon" aria-hidden="true"></i>Keluar
                     </a>
                 </nav>

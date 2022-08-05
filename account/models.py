@@ -7,7 +7,7 @@ class UserAdmin(models.Model):
     no_hp = models.CharField(max_length=200)
     email = models.EmailField(max_length=200)
     profil_pic = models.ImageField(
-        default="profilepics/avatar.jpeg", blank=True, null=True, upload_to='profilepics')
+        default="profilepics/avatar.jpg", blank=True, null=True, upload_to='profilepics')
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

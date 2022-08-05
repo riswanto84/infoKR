@@ -151,3 +151,11 @@ img.logo-footer{
     width: 100px;
     height: auto;
 }
+
+#div_id_nama, #id_no_hp, #div_id_email, #profil_pic-clear_id{
+        margin-bottom: 20px;
+}
+
+.card-body-modif{
+    min-height: 50vh;
+}
