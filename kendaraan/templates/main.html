@@ -76,10 +76,10 @@
                     {% for group in request.user.groups.all %}
                         {% if group.name == 'superadmin' or group.name == 'admin' %}
                             <hr class="soft my-1 bg-white">
-                            <a class="nav-link px-3" href="#">
+                            <a class="nav-link px-3" href="{% url 'pegawai' %}">
                                 <i class="fa fa-address-book fa-lg box-icon" aria-hidden="true"></i>Pegawai
                             </a>
-                            <a class="nav-link px-3" href="#">
+                            <a class="nav-link px-3" href="{% url 'kendaraan' %}">
                                 <i class="fa fa-car fa-lg box-icon" aria-hidden="true"></i>Kendaraan
                             </a>
                         {% endif %}
@@ -95,7 +95,7 @@
                     {% endfor %}
                     {% for group in request.user.groups.all %}
                         {% if group.name == 'superadmin' %}
-                            <a class="nav-link px-3" href="#">
+                            <a class="nav-link px-3" href="{% url 'admin_system' %}">
                                 <i class="fa fa-file-text fa-lg box-icon" aria-hidden="true"></i>Admin System
                             </a>
                         {% endif %}
