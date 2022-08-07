@@ -7,10 +7,10 @@ from .models import Kendaraan
 
 @login_required(login_url='login')
 def dashboard(request):
-    kendaraan_list = Kendaraan.objects.all()
+    kendaraan_list = Kendaraan.objects.all().order_by('id')
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(kendaraan_list, 10)
+    paginator = Paginator(kendaraan_list, 5)
     try:
         kendaraan = paginator.page(page)
     except PageNotAnInteger:
