@@ -47,7 +47,7 @@
                             <label for="inputNopol" class="col-form-label">Cari Kendaraan</label>
                             </div>
                             <div class="col-auto">
-                            <input type="text" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nopol kendaraan!">
+                            <input type="text" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="masukan nopol!">
                             </div>
                             <div class="col-auto">
                             <span id="passwordHelpInline" class="form-text">
@@ -66,76 +66,15 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for data in kendaraan %}
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>B 1590 BZY</td>
-                                    <td>Riswanto</td>
-                                    <td>Biro Umum</td>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ data.nomor_polisi }}</td>
+                                    <td>{{ data.pemilik.nama }}</td>
+                                    <td>{{ data.pemilik.unit_kerja }}</td>
                                     <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>B 1591 BZY</td>
-                                    <td>Bambang Pamungkas</td>
-                                    <td>Biro Humas</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>B 1592 BZY</td>
-                                    <td>Cecep Gorbacep</td>
-                                    <td>Lorem ipsum dolor sit amet.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">4</th>
-                                    <td>B 1593 BZY</td>
-                                    <td>Lorem, ipsum dolor.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">5</th>
-                                    <td>B 1594 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">6</th>
-                                    <td>B 1594 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">7</th>
-                                    <td>B 1595 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">8</th>
-                                    <td>B 1596 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">9</th>
-                                    <td>B 1597 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">10</th>
-                                    <td>B 1598 BZY</td>
-                                    <td>Lorem ipsum dolor sit.</td>
-                                    <td>Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                         <div class="float-end">
