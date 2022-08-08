@@ -52,6 +52,7 @@ class Kendaraan(models.Model):
     pemilik = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
     warna = models.CharField(max_length=200, choices=WARNA)
     merk_type = models.CharField(max_length=300, blank=True, null=True)
+    keterangan = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return self.nomor_polisi

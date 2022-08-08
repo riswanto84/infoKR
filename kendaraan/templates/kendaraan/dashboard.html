@@ -13,12 +13,9 @@
                     <div class="d-flex align-items-center px-2">
                         <i class="fa fa-address-book float-start fa-3x py-auto" aria-hidden="true"></i>
                         <div class="card-body text-end">
-                            <h5 class="card-title">122</h5>
+                            <h5 class="card-title">{{ jumlah_pegawai }}</h5>
                             <p class="card-text">Pegawai</p>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white">
-                        <small class="text-start fw-bold"><a href="#" class="text-reset"> Lebih Detail <i class="fa fa-arrow-circle-o-right"></i></i></a></small>
                     </div>
                 </div>
             </div>
@@ -27,12 +24,9 @@
                     <div class="d-flex align-items-center px-2">
                         <i class="fa fa-car fa-3x py-auto" aria-hidden="true"></i>
                         <div class="card-body text-end">
-                            <h5 class="card-title">100</h5>
+                            <h5 class="card-title">{{ jumlah_kendaraan }}</h5>
                             <p class="card-text">Kendaraan</p>
                         </div>
-                    </div>
-                    <div class="card-footer bg-white">
-                        <small class="text-start fw-bold"><a href="#" class="text-reset"> Lebih Detail <i class="fa fa-arrow-circle-o-right"></i></i></a></small>
                     </div>
                 </div>
             </div>
@@ -42,12 +36,12 @@
             <div class="col-12">
                 <form action="#">
                     <div class="d-block rounded shadow bg-white p-3">
-                        <div class="row g-3 align-items-center float-end mb-2">
+                        <div class="row g-3 align-items-center float-end mb-2 mt-3">
                             <div class="col-auto">
                             <label for="inputNopol" class="col-form-label">Cari Kendaraan</label>
                             </div>
                             <div class="col-auto">
-                            <input type="text" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="masukan nopol!">
+                            <input type="text" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nopol!">
                             </div>
                             <div class="col-auto">
                             <span id="passwordHelpInline" class="form-text">
@@ -72,7 +66,9 @@
                                     <td>{{ data.nomor_polisi }}</td>
                                     <td>{{ data.pemilik.nama }}</td>
                                     <td>{{ data.pemilik.unit_kerja }}</td>
-                                    <td><button type="button" class="btn btn-info btn-sm"><i class="fa fa-info"></i> detail</button></td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm" href="{% url 'detail_kendaraan' data.id %}" role="button"><i class="fa fa-info"> Detail</i></a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -80,11 +76,23 @@
                         <div class="float-end">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                {% if kendaraan.has_previous %}
+                                  <li class="page-item"><a class="page-link" href="?page={{ kendaraan.previous_page_number }}">Previous</a></li>
+                                {% else %}
+                                  <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                                {% endif %}
+                                {% for i in kendaraan.paginator.page_range %}
+                                    {% if kendaraan.number == i %}
+                                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{i}}</a></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if kendaraan.has_next %}
+                                  <li class="page-item"><a class="page-link" href="?page={{ kendaraan.next_page_number }}">Next</a></li>
+                                {% else %}
+                                  <li class="page-item disabled"><a class="page-link">Next</a></li>
+                                {% endif %}
                                 </ul>
                               </nav>
                         </div>

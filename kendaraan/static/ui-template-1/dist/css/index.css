@@ -159,3 +159,7 @@ img.logo-footer{
 .card-body-modif{
     min-height: 50vh;
 }
+
+.navigator a {
+    text-decoration: none;
+}

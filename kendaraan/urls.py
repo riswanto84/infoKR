@@ -6,4 +6,5 @@ urlpatterns = [
     path('kendaraan_app/pegawai', views.pegawai, name='pegawai'),
     path('kendaraan_app/data_kendaraan', views.kendaraan, name='kendaraan'),
     path('kendaraan_app/admin_system', views.admin_system, name='admin_system'),
+    path('kendaraan_app/detail_kendaraan/<str:pk>', views.detail_kendaraan, name='detail_kendaraan'),
 ]

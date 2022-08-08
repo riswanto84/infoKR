@@ -1,0 +1,75 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block title %}Detail Kendaraan{% endblock %}
+
+{% block content %}
+<div class="main-pages">
+    <div class="container-fluid">
+        <div class="d-block rounded shadow bg-white p-3">
+            <div class="row">
+                <div class="col-12 navigator mb-4">
+                    <h6><a href="{% url 'dashboard' %}" class="text-danger"> Beranda </a> &nbsp; <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">&nbsp; Detail Kendaraan </a></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="class col-12">
+                    <table class="table mb-5">
+                        <tbody>
+                            <tr>
+                                <td class="col-4">Nomor Polisi</td>
+                                <td>{{ detail_kendaraan.nomor_polisi }}</td>
+                            </tr>
+                            <tr>
+                                <td>Pemilik</td>
+                                <td>{{ detail_kendaraan.pemilik.nama }}</td>
+                            </tr>
+                            <tr>
+                                <td>Unit Kerja</td>
+                                <td>{{ detail_kendaraan.pemilik.unit_kerja }}</td>
+                            </tr>
+                            <tr>
+                                <td>Nomor HP</td>
+                                <td>{{ detail_kendaraan.pemilik.nomor_hp }}</td>
+                            </tr>
+                            <tr>
+                                <td>Jenis Kendaraan</td>
+                                <td>{{ detail_kendaraan.jenis_kendaraan }}</td>
+                            </tr>
+                            <tr>
+                                <td>Merk</td>
+                                <td>{{ detail_kendaraan.merk_type }}</td>
+                            </tr>
+                            <tr>
+                                <td>Warna</td>
+                                <td>{{ detail_kendaraan.warna }}</td>
+                            </tr>
+                            <tr>
+                                <td class="mb-4">Keterangan</td>
+                                {% if detail_kendaraan.keterangan %}
+                                    <td>{{ detail_kendaraan.keterangan }}</td>
+                                {% else %}
+                                    <td>-</td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% for foto in foto_kendaraan %}
+            <div class="row mb-3 text-center">
+                {% if foto.foto_kendaraan %}
+                <div class="bg-image hover-overlay ripple mb-3">
+                    <img src="{{ foto.foto_kendaraan.url }}" class="img-fluid kendaraan" />
+                    <a href="#!">
+                      <div class="mask" style="background-color: rgba(57, 192, 237, 0.2);"></div>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% include 'footer.html' %}
+    </div>
+</div>
+{% endblock %}
