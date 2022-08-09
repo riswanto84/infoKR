@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Dashboard Kontrak{% endblock %}
+{% block title %}Data Pegawai{% endblock %}
 
 {% block content %}
 
@@ -36,20 +36,34 @@
         <div class="row g-2">
             <div class="col-12">
                     <div class="d-block rounded shadow bg-white p-3">
+                        <div class="row">
+                            <div class="col-12 navigator mb-2">
+                                <h6><a href="{% url 'dashboard' %}" class="text-danger"> Beranda </a> <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">Pegawai </a></h6>
+                                <hr>
+                            </div>
+                        </div>
                         {% for message in messages %}
                             <div class="alert {{ allert }} alert-dismissible fade show h-25" role="alert">
                                 {{ message }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         {% endfor %}
+                        <form action="{% url 'tambah_pegawai' %}">
+                            {% csrf_token %}
+                            <div class="row g-3 align-items-center float-start mb-2 mt-3">
+                                <span id="tambahPegawai" class="form-text">
+                                    <button type="submit" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fa fa-plus-square fa-sm box-icon" aria-hidden="true"></i> Tambah Pegawai</button>
+                                </span>
+                            </div>
+                        </form>
                         <form method="POST" action="">
-                        {% csrf_token %}
+                            {% csrf_token %}
                             <div class="row g-3 align-items-center float-end mb-2 mt-3">
                                 <div class="col-auto">
-                                <label for="inputNopol" class="col-form-label">Cari Kendaraan</label>
+                                <label for="inputNopol" class="col-form-label">Cari Pegawai</label>
                                 </div>
                                 <div class="col-auto">
-                                <input type="text" name="keyword" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nopol!">
+                                <input type="text" name="keyword" id="inputPegawai" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nama Pegawai!">
                                 </div>
                                 <div class="col-auto">
                                 <span id="passwordHelpInline" class="form-text">
@@ -62,21 +76,25 @@
                             <thead>
                                 <tr>
                                     <th scope="col">No</th>
-                                    <th scope="col">Nomor Polisi</th>
-                                    <th scope="col">Pemilik</th>
+                                    <th scope="col">Nama Pegawai</th>
+                                    <th scope="col">NIP</th>
                                     <th scope="col">Unit Kerja</th>
                                     <th scope="col">#</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for data in kendaraan %}
+                                {% for data in pegawai %}
                                 <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
-                                    <td>{{ data.nomor_polisi }}</td>
-                                    <td>{{ data.pemilik.nama }}</td>
-                                    <td>{{ data.pemilik.unit_kerja }}</td>
+                                    <td>{{ data.nama }}</td>
+                                    {% if data.nip %}
+                                        <td>{{ data.nip }}</td>
+                                    {% else %}
+                                    <td> - </td>
+                                    {% endif %}
+                                    <td>{{ data.unit_kerja }}</td>
                                     <td>
-                                        <a class="btn btn-success btn-sm" href="{% url 'detail_kendaraan' data.id %}" role="button"><i class="fa fa-info"> Detail</i></a>
+                                        <a class="btn btn-success btn-sm" href="" role="button"><i class="fa fa-info"> Detail</i></a>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -85,20 +103,20 @@
                         <div class="float-end">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                {% if kendaraan.has_previous %}
-                                  <li class="page-item"><a class="page-link" href="?page={{ kendaraan.previous_page_number }}">Previous</a></li>
+                                {% if pegawai.has_previous %}
+                                  <li class="page-item"><a class="page-link" href="?page={{ pegawai.previous_page_number }}">Previous</a></li>
                                 {% else %}
                                   <li class="page-item disabled"><a class="page-link">Previous</a></li>
                                 {% endif %}
-                                {% for i in kendaraan.paginator.page_range %}
-                                    {% if kendaraan.number == i %}
+                                {% for i in pegawai.paginator.page_range %}
+                                    {% if pegawai.number == i %}
                                         <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{i}}</a></li>
                                     {% else %}
                                         <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
                                     {% endif %}
                                 {% endfor %}
-                                {% if kendaraan.has_next %}
-                                  <li class="page-item"><a class="page-link" href="?page={{ kendaraan.next_page_number }}">Next</a></li>
+                                {% if pegawai.has_next %}
+                                  <li class="page-item"><a class="page-link" href="?page={{ pegawai.next_page_number }}">Next</a></li>
                                 {% else %}
                                   <li class="page-item disabled"><a class="page-link">Next</a></li>
                                 {% endif %}
@@ -106,8 +124,10 @@
                               </nav>
                         </div>
                     </div>
+                    
             </div>
         </div>
+        
         {% include 'footer.html' %}
     </div>
 </div>

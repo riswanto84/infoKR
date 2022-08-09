@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+
 from .decorators import check_superadmin, check_admin_and_superadmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import FotoKendaraan, Kendaraan, Pegawai
+
 from django.contrib import messages
+from .forms import *
 
 @login_required(login_url='login')
 def dashboard(request):
@@ -79,7 +82,77 @@ def detail_kendaraan(request, pk):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def pegawai(request):
-    return HttpResponse('ini laman pegawai, hanya bisa dilihat admin dan superadmin')
+    pegawai_list = Pegawai.objects.all().order_by('id')
+    page = request.GET.get('page', 1)
+    
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
+    
+    paginator = Paginator(pegawai_list, 10)
+    try:
+        pegawai = paginator.page(page)
+    except PageNotAnInteger:
+        pegawai = paginator.page(1)
+    except EmptyPage:
+        pegawai = paginator.page(paginator.num_pages)
+    
+    if request.method == 'POST':
+        pegawai_keyword = request.POST['keyword']
+        if pegawai_keyword == '':
+            messages.info(request, 'Kolom pencarian tidak boleh kosong!')
+            allert = 'alert-danger'
+            context = {
+                'pegawai': pegawai,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/pegawai.html', context)
+        
+        query_pegawai = Pegawai.objects.filter(nama__contains=pegawai_keyword)
+        if query_pegawai:
+            messages.info(request, 'Data pegawai ditemukan.')
+            allert = 'alert-success'
+            context = {
+                'pegawai': query_pegawai,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/pegawai.html', context)
+        else:
+            messages.info(request, 'Data pegawai tidak ditemukan!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': query_pegawai,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/pegawai.html', context)
+        
+    
+    context = {
+        'pegawai': pegawai,
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+    }
+    return render(request, 'kendaraan/pegawai.html', context)
+
+@login_required(login_url='login')
+def tambah_pegawai(request):
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
+    form = PegawaiForm
+    
+    context = {
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'form': form,
+    }
+    return render(request, 'kendaraan/tambah_pegawai.html', context)
 
 @login_required(login_url='login')
 @check_admin_and_superadmin

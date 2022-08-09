@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,6 +16,8 @@
     <link rel="stylesheet" href="{% static 'ui-template-1/dist/css/index.css' %}" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -69,9 +72,6 @@
                     <a class="nav-link px-3 active" href="{% url 'dashboard' %}">
                         <i class="fa fa-home fa-lg box-icon" aria-hidden="true"></i>Beranda
                     </a>
-                    <a class="nav-link px-3" href="{% url 'account_setting' %}">
-                        <i class="fa fa-user fa-lg box-icon" aria-hidden="true"></i>Profil
-                    </a>
                     <!-- Fitur Kendaraan-->
                     {% for group in request.user.groups.all %}
                         {% if group.name == 'superadmin' or group.name == 'admin' %}
@@ -108,6 +108,12 @@
             </div>
         </div>
 
+        <div class="preloader">
+            <div class="loading">
+                <img src="{% static 'ui-template-1/images/kemsos-01.png' %}" alt="Computer man" style="width:200px;height:200px;">
+            </div>
+        </div>
+
         {% block content %}
         {% endblock %}
         
@@ -117,10 +123,23 @@
     <script src="{% static 'ui-template-1/dist/js/jquery.js' %}"></script>
     <script src="{% static 'ui-template-1/assets/app/js/bootstrap.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
     <script src="{% static 'ui-template-1/dist/js/index.js' %}"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#id_unit_kerja').select2();
+        });
+    </script>
 </body>
+    <!-- splash screen -->
+    <script>
+        $(document).ready(function(){
+            $(".preloader").fadeOut();
+        })
+    </script>
+
+    
 
 </html>
