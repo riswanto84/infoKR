@@ -37,12 +37,18 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     <div class="d-block rounded shadow bg-white p-3">
+                        {% for message in messages %}
+                            <div class="alert {{ allert }} alert-dismissible fade show h-25" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
                         <div class="row g-3 align-items-center float-end mb-2 mt-3">
                             <div class="col-auto">
                             <label for="inputNopol" class="col-form-label">Cari Kendaraan</label>
                             </div>
                             <div class="col-auto">
-                            <input type="text" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nopol!">
+                            <input type="text" name="keyword" id="inputPassword6" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nopol!">
                             </div>
                             <div class="col-auto">
                             <span id="passwordHelpInline" class="form-text">

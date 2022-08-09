@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .decorators import check_superadmin, check_admin_and_superadmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import FotoKendaraan, Kendaraan, Pegawai
+from django.contrib import messages
 
 @login_required(login_url='login')
 def dashboard(request):
@@ -22,8 +23,40 @@ def dashboard(request):
         kendaraan = paginator.page(paginator.num_pages)
         
     if request.method == 'POST':
-        #query_nopol = Kendaraan.objects.filter(nomor_polisi__contains=) 
-        return HttpResponse('sampai disini')
+        nopol_keyword = request.POST['keyword']
+        if nopol_keyword == '':
+            # return HttpResponse('keyword tidak boleh kosong')
+            messages.info(request, 'Kolom pencarian tidak boleh kosong!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': kendaraan,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/dashboard.html', context)
+        
+        query_nopol = Kendaraan.objects.filter(nomor_polisi__contains=nopol_keyword)
+        if query_nopol:
+            messages.info(request, 'Nomor Polisi ditemukan.')
+            allert = 'alert-success'
+            context = {
+                'kendaraan': query_nopol,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/dashboard.html', context)
+        else:
+            messages.info(request, 'Nomor Polisi tidak ditemukan!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': query_nopol,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/dashboard.html', context)
 
     context = {
         'kendaraan': kendaraan,
