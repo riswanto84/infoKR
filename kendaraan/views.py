@@ -20,6 +20,10 @@ def dashboard(request):
         kendaraan = paginator.page(1)
     except EmptyPage:
         kendaraan = paginator.page(paginator.num_pages)
+        
+    if request.method == 'POST':
+        #query_nopol = Kendaraan.objects.filter(nomor_polisi__contains=) 
+        return HttpResponse('sampai disini')
 
     context = {
         'kendaraan': kendaraan,
@@ -38,10 +42,6 @@ def detail_kendaraan(request, pk):
         'foto_kendaraan': foto_kendaraan,
     }
     return render(request, 'kendaraan/detail_kendaraan.html', context)
-
-@login_required(login_url='login')
-def cari_kendaraan(request, pk):
-    return HttpResponse('cari kendaraan')
 
 @login_required(login_url='login')
 @check_admin_and_superadmin
