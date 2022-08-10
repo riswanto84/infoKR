@@ -207,7 +207,10 @@ def hapus_pegawai(request, pk):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def kendaraan(request):
-    return HttpResponse('ini laman kendaraan, hanya bisa dilihat admin dan superadmin')
+    context = {
+        
+    }
+    return render(request, 'kendaraan/kendaraan.html')
 
 @login_required(login_url='login')
 @check_superadmin
