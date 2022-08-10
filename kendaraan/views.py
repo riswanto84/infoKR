@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import FotoKendaraan, Kendaraan, Pegawai
 
 from django.contrib import messages
+from django.db.models.deletion import RestrictedError
 from .forms import *
 
 @login_required(login_url='login')
@@ -85,6 +86,8 @@ def pegawai(request):
     pegawai_list = Pegawai.objects.all().order_by('id')
     page = request.GET.get('page', 1)
     
+    allert = 'alert-success'
+    
     jumlah_pegawai = Pegawai.objects.count()
     jumlah_kendaraan = Kendaraan.objects.count()
     
@@ -137,22 +140,69 @@ def pegawai(request):
         'pegawai': pegawai,
         'jumlah_pegawai': jumlah_pegawai,
         'jumlah_kendaraan': jumlah_kendaraan,
+        'allert': allert,
     }
     return render(request, 'kendaraan/pegawai.html', context)
 
+@check_admin_and_superadmin
 @login_required(login_url='login')
 def tambah_pegawai(request):
     jumlah_pegawai = Pegawai.objects.count()
     jumlah_kendaraan = Kendaraan.objects.count()
     
     form = PegawaiForm
-    
+    if request.method == 'POST':
+        form = PegawaiForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data Pegawai berhasil disimpan')
+            return redirect('pegawai')
     context = {
         'jumlah_pegawai': jumlah_pegawai,
         'jumlah_kendaraan': jumlah_kendaraan,
         'form': form,
     }
     return render(request, 'kendaraan/tambah_pegawai.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
+def detail_pegawai(request, pk):
+    data = Pegawai.objects.get(id=pk)
+    kendaraan_terdaftar = Kendaraan.objects.filter(pemilik_id=data.id)
+    
+    context = {
+        'data': data,
+        'kendaraan_terdaftar': kendaraan_terdaftar,
+    }
+    return render(request, 'kendaraan/detail_pegawai.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
+def ubah_pegawai(request, pk):
+    pegawai = Pegawai.objects.get(id=pk)
+    form = PegawaiForm(instance=pegawai)
+    
+    if request.method == 'POST':
+        form = PegawaiForm(request.POST, request.FILES, instance=pegawai)
+        form.save()
+        messages.info(request, 'Data berhasil diubah')
+        return redirect('pegawai')
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'kendaraan/ubah_pegawai.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
+def hapus_pegawai(request, pk):
+    try:
+        pegawai = Pegawai.objects.get(id=pk)
+        pegawai.delete()
+        messages.info(request, 'Data berhasil dihapus')
+        return redirect('pegawai')
+    except RestrictedError:
+        return HttpResponse('Tidak dapat menghapus data..!')
 
 @login_required(login_url='login')
 @check_admin_and_superadmin

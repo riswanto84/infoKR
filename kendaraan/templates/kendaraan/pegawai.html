@@ -79,7 +79,7 @@
                                     <th scope="col">Nama Pegawai</th>
                                     <th scope="col">NIP</th>
                                     <th scope="col">Unit Kerja</th>
-                                    <th scope="col">#</th>
+                                    <th scope="col" class="text-center">#</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -94,7 +94,11 @@
                                     {% endif %}
                                     <td>{{ data.unit_kerja }}</td>
                                     <td>
-                                        <a class="btn btn-success btn-sm" href="" role="button"><i class="fa fa-info"> Detail</i></a>
+                                        <div>
+                                            <a class="btn btn-success btn-sm mr-1 mb-1" href="{% url 'detail_pegawai' data.id %}" role="button"><i class="fa fa-eye"> </i></a>
+                                            <a class="btn btn-warning btn-sm mr-1 mb-1" href="{% url 'ubah_pegawai' data.id %}" role="button"><i class="fa fa-pencil"> </i></a>
+                                            <a class="btn btn-danger btn-sm" href="{% url 'hapus_pegawai' data.id %}" onclick="return confirm('Lanjut menghapus data?');" role="button"><i class="fa fa-trash-o"> </i></a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
