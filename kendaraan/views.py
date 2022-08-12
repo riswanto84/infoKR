@@ -207,10 +207,52 @@ def hapus_pegawai(request, pk):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def kendaraan(request):
-    context = {
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    kendaraan = Kendaraan.objects.all().order_by('id')
+    
+    # dari sini
+    if request.method == 'POST':
+        kendaraan_keyword = request.POST['keyword']
+        if kendaraan_keyword == '':
+            messages.info(request, 'Kolom pencarian tidak boleh kosong!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': kendaraan,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/kendaraan.html', context)
         
+        query_kendaraan = Kendaraan.objects.filter(nomor_polisi__contains=kendaraan_keyword)
+        if query_kendaraan:
+            messages.info(request, 'Data kendaraan ditemukan.')
+            allert = 'alert-success'
+            context = {
+                'kendaraan': query_kendaraan,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/kendaraan.html', context)
+        else:
+            messages.info(request, 'Data kendaraan tidak ditemukan!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': query_kendaraan,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/kendaraan.html', context)
+    
+    context = {
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'kendaraan': kendaraan,
     }
-    return render(request, 'kendaraan/kendaraan.html')
+    return render(request, 'kendaraan/kendaraan.html', context)
 
 @login_required(login_url='login')
 @check_superadmin
