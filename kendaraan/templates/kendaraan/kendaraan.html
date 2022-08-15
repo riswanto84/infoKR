@@ -48,7 +48,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         {% endfor %}
-                        <form action="{% url 'tambah_pegawai' %}">
+                        <form action="{% url 'tambah_kendaraan' %}">
                             {% csrf_token %}
                             <div class="row g-3 align-items-center float-start mb-2 mt-3">
                                 <span id="tambahKendaraan" class="form-text">
@@ -63,7 +63,7 @@
                                 <label for="inputNopol" class="col-form-label">Cari Kendaraan</label>
                                 </div>
                                 <div class="col-auto">
-                                <input type="text" name="keyword" id="inputNopol" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nomor Polisi..!">
+                                <input type="text" name="keyword" id="inputPegawai" class="form-control" aria-describedby="inputNopol" placeholder="Masukan Nomor Polisi!">
                                 </div>
                                 <div class="col-auto">
                                 <span id="passwordHelpInline" class="form-text">
@@ -79,7 +79,7 @@
                                     <th scope="col">Nomor Polisi</th>
                                     <th scope="col">Pemilik</th>
                                     <th scope="col">Unit Kerja</th>
-                                    <th scope="col">#</th>
+                                    <th scope="col" class="text-center">#</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -87,13 +87,13 @@
                                 <tr>
                                     <th scope="row">{{ forloop.counter }}</th>
                                     <td>{{ data.nomor_polisi }}</td>
-                                    <td>{{ data.emilik.nama }}</td>
-                                    <td>{{ data.pemilik.unit_kerja }}</td>
+                                    <td>{{ data.pemilik.nama }}</td>
+                                    <td>{{ data.unit_kerja }}</td>
                                     <td>
                                         <div>
                                             <a class="btn btn-success btn-sm mr-1 mb-1" href="#" role="button"><i class="fa fa-eye"> </i></a>
                                             <a class="btn btn-warning btn-sm mr-1 mb-1" href="#" role="button"><i class="fa fa-pencil"> </i></a>
-                                            <a class="btn btn-danger btn-sm" href="#" onclick="return confirm('Lanjut menghapus data?');" role="button"><i class="fa fa-trash-o"> </i></a>
+                                            <a class="btn btn-danger btn-sm" href="{% url 'hapus_kendaraan' data.id %}" onclick="return confirm('Lanjut menghapus data?');" role="button"><i class="fa fa-trash-o"> </i></a>
                                         </div>
                                     </td>
                                 </tr>

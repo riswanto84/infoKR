@@ -43,8 +43,6 @@ class Kendaraan(models.Model):
         ('Putih', 'putih'),
         ('Kuning', 'kuning'),
         ('Silver', 'silver'),
-        ('Ungu', 'ungu'),
-        ('Pink', 'pink'),
         ('Lainnya', 'lainnya'),
     )
     nomor_polisi = models.CharField(max_length=10, blank=False, null=False)

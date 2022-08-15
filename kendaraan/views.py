@@ -210,8 +210,17 @@ def kendaraan(request):
     jumlah_pegawai = Pegawai.objects.count()
     jumlah_kendaraan = Kendaraan.objects.count()
     kendaraan = Kendaraan.objects.all().order_by('id')
+    page = request.GET.get('page', 1)
+    allert = 'alert-success'
     
-    # dari sini
+    paginator = Paginator(kendaraan, 10)
+    try:
+        kendaraan = paginator.page(page)
+    except PageNotAnInteger:
+        kendaraan = paginator.page(1)
+    except EmptyPage:
+        kendaraan = paginator.page(paginator.num_pages)
+    
     if request.method == 'POST':
         kendaraan_keyword = request.POST['keyword']
         if kendaraan_keyword == '':
@@ -251,8 +260,40 @@ def kendaraan(request):
         'jumlah_pegawai': jumlah_pegawai,
         'jumlah_kendaraan': jumlah_kendaraan,
         'kendaraan': kendaraan,
+        'allert': allert,
     }
     return render(request, 'kendaraan/kendaraan.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def tambah_kendaraan(request):
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
+    form = KendaraanForm
+    if request.method == 'POST':
+        form = KendaraanForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data kendaraan berhasil disimpan')
+            return redirect('kendaraan')
+    context = {
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'form': form,
+    }
+    return render(request, 'kendaraan/tambah_kendaraan.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def hapus_kendaraan(request, pk):
+    try:
+        kendaraan = Kendaraan.objects.get(id=pk)
+        kendaraan.delete()
+        messages.info(request, 'Data berhasil dihapus')
+        return redirect('kendaraan')
+    except RestrictedError:
+        return HttpResponse('Tidak dapat menghapus data..!')
 
 @login_required(login_url='login')
 @check_superadmin

@@ -27,4 +27,16 @@ class PegawaiForm(ModelForm):
         self.fields['nomor_hp'].widget.attrs['placeholder'] = 'Masukan nomor HP'
         self.fields['email'].widget.attrs['class'] = 'email'
         self.fields['email'].widget.attrs['placeholder'] = 'Masukan alamat email'
+
+class KendaraanForm(ModelForm):
+    class Meta:
+        model = Kendaraan
+        fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        super(KendaraanForm, self).__init__(*args, **kwargs)
+        
+        self.fields['nomor_polisi'].widget.attrs['class'] = 'mb-2'
+        self.fields['jenis_kendaraan'].widget.attrs['class'] = 'mb-2'
+        
         
