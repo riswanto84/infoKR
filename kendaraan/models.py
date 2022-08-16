@@ -24,26 +24,26 @@ class Pegawai(models.Model):
 
 class Kendaraan(models.Model):
     CATEGORY = (
-        ('Sepeda Motor Dinas', 'sepeda motor dinas'),
-        ('Mobil Dinas', 'mobil dinas'),
-        ('Sepeda Motor Pribadi', 'sepeda motor pribadi'),
-        ('Mobil Pribadi', 'mobil pribadi'),
-        ('Bus Jemputan', 'bus jemputan'),
-        ('Ambulans', 'ambulans'),
-        ('Kendaraan Lainnya', 'kendaraan lainnya')
+        ('Sepeda Motor Dinas', 'Sepeda Motor Dinas'),
+        ('Mobil Dinas', 'Mobil Dinas'),
+        ('Sepeda Motor Pribadi', 'Sepeda Motor Pribadi'),
+        ('Mobil Pribadi', 'Mobil Pribadi'),
+        ('Bus Jemputan', 'Bus Jemputan'),
+        ('Ambulans', 'Ambulans'),
+        ('Kendaraan Lainnya', 'Kendaraan Lainnya')
     )
 
     WARNA = (
-        ('Abu-abu', 'abu-abu'),
-        ('Biru', 'biru'),
-        ('Coklat', 'coklat'),
-        ('Hitam', 'hitam'),
-        ('Hijau', 'hijau'),
-        ('Merah', 'merah'),
-        ('Putih', 'putih'),
-        ('Kuning', 'kuning'),
-        ('Silver', 'silver'),
-        ('Lainnya', 'lainnya'),
+        ('Abu-abu', 'Abu-Abu'),
+        ('Biru', 'Biru'),
+        ('Coklat', 'Coklat'),
+        ('Hitam', 'Hitam'),
+        ('Hijau', 'Hijau'),
+        ('Merah', 'Merah'),
+        ('Putih', 'Putih'),
+        ('Kuning', 'Kuning'),
+        ('Silver', 'Silver'),
+        ('Lainnya', 'Lainnya'),
     )
     nomor_polisi = models.CharField(max_length=10, blank=False, null=False)
     jenis_kendaraan = models.CharField(max_length=200, choices=CATEGORY)

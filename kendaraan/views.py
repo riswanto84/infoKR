@@ -1,3 +1,6 @@
+from multiprocessing import context
+from operator import and_
+from ssl import create_default_context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -12,7 +15,7 @@ from .forms import *
 
 @login_required(login_url='login')
 def dashboard(request):
-    kendaraan_list = Kendaraan.objects.all().order_by('id')
+    kendaraan_list = Kendaraan.objects.all().order_by('-id')
     page = request.GET.get('page', 1)
     
     jumlah_pegawai = Pegawai.objects.count()
@@ -209,7 +212,7 @@ def hapus_pegawai(request, pk):
 def kendaraan(request):
     jumlah_pegawai = Pegawai.objects.count()
     jumlah_kendaraan = Kendaraan.objects.count()
-    kendaraan = Kendaraan.objects.all().order_by('id')
+    kendaraan = Kendaraan.objects.all().order_by('-id')
     page = request.GET.get('page', 1)
     allert = 'alert-success'
     
@@ -271,16 +274,34 @@ def tambah_kendaraan(request):
     jumlah_kendaraan = Kendaraan.objects.count()
     
     form = KendaraanForm
+    form_foto = FotoKendaraanForm
+    
     if request.method == 'POST':
         form = KendaraanForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        form_foto = FotoKendaraanForm(request.POST, request.FILES)
+        images = request.FILES.getlist('foto_kendaraan')
+        if form.is_valid() and form_foto.is_valid():
+            data = request.POST
+            kendaraan, created = Kendaraan.objects.get_or_create(
+                nomor_polisi = data['nomor_polisi'],
+                jenis_kendaraan = data['jenis_kendaraan'],
+                pemilik_id = data['pemilik'],
+                warna = data['warna'],
+                merk_type = data['merk_type'],
+                keterangan = data['keterangan'],
+            )
+            for image in images:
+                foto_kendaraan = FotoKendaraan.objects.create(
+                    nomor_polisi = kendaraan,
+                    foto_kendaraan = image,
+                )
             messages.info(request, 'Data kendaraan berhasil disimpan')
             return redirect('kendaraan')
     context = {
         'jumlah_pegawai': jumlah_pegawai,
         'jumlah_kendaraan': jumlah_kendaraan,
         'form': form,
+        'form_foto': form_foto,
     }
     return render(request, 'kendaraan/tambah_kendaraan.html', context)
 
@@ -294,6 +315,36 @@ def hapus_kendaraan(request, pk):
         return redirect('kendaraan')
     except RestrictedError:
         return HttpResponse('Tidak dapat menghapus data..!')
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def detail_kendaraan_admin(request, pk):
+    kendaraan = Kendaraan.objects.get(id=pk)
+    id_kendaraan = kendaraan.id
+    foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
+    context = {
+        'detail_kendaraan': kendaraan,
+        'foto_kendaraan': foto_kendaraan,
+    }
+    return render(request, 'kendaraan/detail_kendaraan_admin.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def edit_kendaraan(request, pk):
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    kendaraan = Kendaraan.objects.get(id=pk)
+    form = KendaraanForm(instance = kendaraan)
+    foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=kendaraan.id)
+    #form_foto = FotoKendaraanForm(instance = foto_kendaraan)
+    
+    context = {
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'form': form,
+        #'form_foto': form_foto,
+    }
+    return render(request, 'kendaraan/edit_kendaraan.html', context)
 
 @login_required(login_url='login')
 @check_superadmin

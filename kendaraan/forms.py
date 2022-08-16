@@ -35,8 +35,14 @@ class KendaraanForm(ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(KendaraanForm, self).__init__(*args, **kwargs)
-        
         self.fields['nomor_polisi'].widget.attrs['class'] = 'mb-2'
         self.fields['jenis_kendaraan'].widget.attrs['class'] = 'mb-2'
         
-        
+class FotoKendaraanForm(ModelForm):
+    foto_kendaraan = forms.ImageField(label="Foto", widget=forms.ClearableFileInput(attrs={"multiple": True}),)
+    
+    class Meta:
+        model = FotoKendaraan
+        fields = ("foto_kendaraan",)
+    
+    

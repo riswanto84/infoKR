@@ -88,11 +88,11 @@
                                     <th scope="row">{{ forloop.counter }}</th>
                                     <td>{{ data.nomor_polisi }}</td>
                                     <td>{{ data.pemilik.nama }}</td>
-                                    <td>{{ data.unit_kerja }}</td>
+                                    <td>{{ data.pemilik.unit_kerja }}</td>
                                     <td>
                                         <div>
-                                            <a class="btn btn-success btn-sm mr-1 mb-1" href="#" role="button"><i class="fa fa-eye"> </i></a>
-                                            <a class="btn btn-warning btn-sm mr-1 mb-1" href="#" role="button"><i class="fa fa-pencil"> </i></a>
+                                            <a class="btn btn-success btn-sm mr-1 mb-1" href="{% url 'detail_kendaraan_admin' data.id %}" role="button"><i class="fa fa-eye"> </i></a>
+                                            <a class="btn btn-warning btn-sm mr-1 mb-1" href="{% url 'edit_kendaraan' data.id %}" role="button"><i class="fa fa-pencil"> </i></a>
                                             <a class="btn btn-danger btn-sm" href="{% url 'hapus_kendaraan' data.id %}" onclick="return confirm('Lanjut menghapus data?');" role="button"><i class="fa fa-trash-o"> </i></a>
                                         </div>
                                     </td>

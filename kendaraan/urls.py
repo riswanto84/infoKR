@@ -15,6 +15,8 @@ urlpatterns = [
     path('kendaraan_app/data_kendaraan', views.kendaraan, name='kendaraan'),
     path('kendaraan_app/tambah_kendaraan', views.tambah_kendaraan, name='tambah_kendaraan'),
     path('kendaraan_app/hapus_kendaraan/<str:pk>', views.hapus_kendaraan, name='hapus_kendaraan'),
+    path('kendaraan_app/detail_kendaraan_admin/<str:pk>', views.detail_kendaraan_admin, name='detail_kendaraan_admin'),
+    path('kendaraan_app/edit_kendaraan/<str:pk>', views.edit_kendaraan, name='edit_kendaraan'),
     
     # admin system
     path('kendaraan_app/admin_system', views.admin_system, name='admin_system'),

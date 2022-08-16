@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %}Tambah Data Kendaraan{% endblock %}
+{% block title %}Edit Data Kendaraan{% endblock %}
 
 {% block content %}
     <div class="main-pages">
@@ -41,14 +41,14 @@
                                 <h6><a href="{% url 'dashboard' %}" class="text-danger"> Beranda </a> 
                                     <i class="fa fa-caret-right"></i> 
                                     <a href="{% url 'kendaraan' %}" class="text-success"> Kendaraan </a> 
-                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Tambah Kendaraan </a></h6>
+                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Edit Kendaraan </a></h6>
                                 <hr>
                             </div>
                         </div>
                         <form action="" class="row g-3" method="post" enctype="multipart/form-data">
                             <fieldset>
                             {% csrf_token %}
-                                <legend class="text-center mb-4">Tambah Data Kendaraan</legend>
+                                <legend class="text-center mb-4">Ubah Data Kendaraan</legend>
                                     {{ form|crispy }}
                                     <input type="hidden" id="nomor_polisi_id" value="">
                                     {{ form_foto|crispy }}
