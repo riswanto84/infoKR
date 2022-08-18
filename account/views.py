@@ -3,6 +3,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from .forms import UserAdminForm, UserRegistrationForm
 from django.contrib import messages
 from kendaraan.decorators import check_superadmin, check_admin_and_superadmin
@@ -32,6 +33,7 @@ def user_register(request):
     profil = UserAdmin.objects.all().order_by('-id')
     page = request.GET.get('page', 1)
     paginator = Paginator(profil, 10)
+    allert = 'alert-success'
     
     try:
         profil = paginator.page(page)
@@ -41,6 +43,7 @@ def user_register(request):
         profil = paginator.page(paginator.num_pages)
     context = {
         'profil': profil,
+        'allert': allert,
     }
     return render(request, 'account/user_register.html', context)
 
@@ -49,13 +52,18 @@ def user_register(request):
 def tambah_user(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
-        profil_form = UserAdminForm(request.POST)
-        if user_form.is_valid():
+        profil_form = UserAdminForm(request.POST, request.FILES)
+        if user_form.is_valid() and profil_form.is_valid():
             user = user_form.save(commit=False)
-            profil = profil_form.save(commit=False)
-            user.set_password(user_form.cleaned_data['password'])
-            user.profil = profil
+            password = user_form.cleaned_data['password']
+            user.set_password(password)
             user.save()
+            
+            group = Group.objects.get(name='user')
+            user.groups.add(group)
+            profil = profil_form.save(commit=False)
+            profil.user = user
+            profil.save()
             messages.info(request, 'Data berhasil disimpan')
             return redirect('user_register')
     user_form = UserRegistrationForm()

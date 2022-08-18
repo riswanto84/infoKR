@@ -24,11 +24,11 @@ class UserAdminForm(ModelForm):
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Masukan Kembali Password', widget=forms.PasswordInput)
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'email')
+        fields = ('username', )
     
     def clean_password2(self):
         cd = self.cleaned_data

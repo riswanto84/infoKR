@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="class col-lg-4 col-sm-12">
+                <div class="class col-lg-4 col-sm-12 text-center mb-2">
                     <img class="img-thumbnail" src="{{ data.profil_pic.url }}" alt="{{ data.foto }}">
                 </div>
                 <div class="class col-lg-8 col-sm-12">
@@ -21,10 +21,17 @@
                         <tbody>
                             <tr>
                                 <td class="col-4">Nama</td>
+                                <td>:</td>
                                 <td>{{ data.nama }}</td>
                             </tr>
                             <tr>
+                                <td class="col-4">Username</td>
+                                <td>:</td>
+                                <td>{{ data.user.username }}</td>
+                            </tr>
+                            <tr>
                                 <td>NIP / NIK</td>
+                                <td>:</td>
                                 {% if data.nip %}
                                     <td>{{ data.nip }}</td>
                                 {% else %}
@@ -33,18 +40,22 @@
                             </tr>
                             <tr>
                                 <td>Alamat Email</td>
+                                <td>:</td>
                                 <td>{{ data.email }}</td>
                             </tr>
                             <tr>
                                 <td>Unit Kerja</td>
+                                <td>:</td>
                                 <td>{{ data.unit_kerja }}</td>
                             </tr>
                             <tr>
                                 <td>Nomor HP</td>
+                                <td>:</td>
                                 <td>{{ data.no_hp }}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
+                                <td>:</td>
                                 <td>{{ data.email }}</td>
                             </tr>
                         </tbody>
