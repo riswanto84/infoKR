@@ -122,11 +122,17 @@
     <div class="slider-background" id="sliders-background"></div>
     <script src="{% static 'ui-template-1/dist/js/jquery.js' %}"></script>
     <script src="{% static 'ui-template-1/assets/app/js/bootstrap.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script src="{% static 'chart/chart.js' %}"></script>
     <script src="{% static 'ui-template-1/dist/js/index.js' %}"></script>
 
+    <!-- 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    -->
+    <script src="{% static 'jquery-3.6.0/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'select2/select2.min.js' %}"></script>
+
     <script>
         $(document).ready(function() {
             $('#id_unit_kerja').select2();

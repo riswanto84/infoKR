@@ -1,3 +1,4 @@
+from random import choices
 from django.db.models import fields
 from django.forms import ModelForm, widgets
 from kendaraan.models import *
@@ -11,7 +12,7 @@ class PegawaiForm(ModelForm):
         
         labels = {
             'nama': _('Nama Lengkap'),
-            'nip': _('NIP'),
+            'nip': _('NIP / NIK'),
             'unit_kerja': _('Unit Kerja'),
             'nomor_hp': _('Nomor HP'),
         }
@@ -32,11 +33,18 @@ class KendaraanForm(ModelForm):
     class Meta:
         model = Kendaraan
         fields = '__all__'
+
+        labels = {
+            'nomor_polisi': _('Nomor Polisi'),
+            'jenis_kendaraan': _('Jenis Kendaraan'),
+        }
     
     def __init__(self, *args, **kwargs):
         super(KendaraanForm, self).__init__(*args, **kwargs)
+        pemilik = Pegawai.objects.all()
         self.fields['nomor_polisi'].widget.attrs['class'] = 'mb-2'
         self.fields['jenis_kendaraan'].widget.attrs['class'] = 'mb-2'
+        
         
 class FotoKendaraanForm(ModelForm):
     foto_kendaraan = forms.ImageField(label="Foto", widget=forms.ClearableFileInput(attrs={"multiple": True}),)

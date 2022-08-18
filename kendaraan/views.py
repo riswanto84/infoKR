@@ -1,3 +1,4 @@
+from ast import Or
 from multiprocessing import context
 from operator import and_
 from ssl import create_default_context
@@ -12,6 +13,7 @@ from .models import FotoKendaraan, Kendaraan, Pegawai
 from django.contrib import messages
 from django.db.models.deletion import RestrictedError
 from .forms import *
+from django.forms import inlineformset_factory
 
 @login_required(login_url='login')
 def dashboard(request):
@@ -43,7 +45,7 @@ def dashboard(request):
             }
             return render(request, 'kendaraan/dashboard.html', context)
         
-        query_nopol = Kendaraan.objects.filter(nomor_polisi__contains=nopol_keyword)
+        query_nopol = Kendaraan.objects.filter(nomor_polisi__contains=nopol_keyword) or Kendaraan.objects.filter(pemilik__nama__contains=nopol_keyword)
         if query_nopol:
             messages.info(request, 'Nomor Polisi ditemukan.')
             allert = 'alert-success'
@@ -116,7 +118,7 @@ def pegawai(request):
             }
             return render(request, 'kendaraan/pegawai.html', context)
         
-        query_pegawai = Pegawai.objects.filter(nama__contains=pegawai_keyword)
+        query_pegawai = Pegawai.objects.filter(nama__contains=pegawai_keyword) or Pegawai.objects.filter(nip__contains=pegawai_keyword) or Pegawai.objects.filter(unit_kerja__nama_unit__contains=pegawai_keyword)
         if query_pegawai:
             messages.info(request, 'Data pegawai ditemukan.')
             allert = 'alert-success'
@@ -237,7 +239,7 @@ def kendaraan(request):
             }
             return render(request, 'kendaraan/kendaraan.html', context)
         
-        query_kendaraan = Kendaraan.objects.filter(nomor_polisi__contains=kendaraan_keyword)
+        query_kendaraan = Kendaraan.objects.filter(nomor_polisi__contains=kendaraan_keyword) or Kendaraan.objects.filter(pemilik__nama__contains=kendaraan_keyword) or Kendaraan.objects.filter(pemilik__unit_kerja__nama_unit__contains=kendaraan_keyword)
         if query_kendaraan:
             messages.info(request, 'Data kendaraan ditemukan.')
             allert = 'alert-success'
@@ -335,14 +337,23 @@ def edit_kendaraan(request, pk):
     jumlah_kendaraan = Kendaraan.objects.count()
     kendaraan = Kendaraan.objects.get(id=pk)
     form = KendaraanForm(instance = kendaraan)
-    foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=kendaraan.id)
-    #form_foto = FotoKendaraanForm(instance = foto_kendaraan)
+    KendaraanFormset = inlineformset_factory(Kendaraan, FotoKendaraan, fields=('foto_kendaraan',), extra=1)
+    formset = KendaraanFormset(instance=kendaraan)
     
+    if request.method == 'POST':
+        form = KendaraanForm(request.POST, request.FILES, instance=kendaraan)
+        formset = KendaraanFormset(request.POST, request.FILES, instance=kendaraan)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            messages.info(request, 'Data berhasil diubah')
+            return redirect('kendaraan')
     context = {
         'jumlah_pegawai': jumlah_pegawai,
         'jumlah_kendaraan': jumlah_kendaraan,
+        'kendaraan': kendaraan,
         'form': form,
-        #'form_foto': form_foto,
+        'formset': formset,
     }
     return render(request, 'kendaraan/edit_kendaraan.html', context)
 

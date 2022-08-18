@@ -38,20 +38,25 @@
                     <div class="d-block rounded shadow bg-white p-3">
                         <div class="row">
                             <div class="col-12 navigator mb-4">
-                                <h6><a href="{% url 'dashboard' %}" class="text-danger"> Beranda </a> 
+                                <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> 
                                     <i class="fa fa-caret-right"></i> 
-                                    <a href="{% url 'kendaraan' %}" class="text-success"> Kendaraan </a> 
-                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Edit Kendaraan </a></h6>
+                                    <a href="{% url 'kendaraan' %}" class="text-dark"> Kendaraan </a> 
+                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Edit Kendaraan</a></h6>
                                 <hr>
                             </div>
                         </div>
                         <form action="" class="row g-3" method="post" enctype="multipart/form-data">
                             <fieldset>
                             {% csrf_token %}
-                                <legend class="text-center mb-4">Ubah Data Kendaraan</legend>
+                                {{ formset.management_form }}
+                                <legend class="text-center mb-0">Ubah Data Kendaraan</legend>
+                                    <p class="text-muted text-center mb-4">Atas Nama {{ kendaraan.pemilik.nama }} - {{ kendaraan.pemilik.nip }}</p>
                                     {{ form|crispy }}
-                                    <input type="hidden" id="nomor_polisi_id" value="">
-                                    {{ form_foto|crispy }}
+
+                                    {% for formfoto in formset %}
+                                        {{ formfoto|crispy }}
+                                        <hr>
+                                    {% endfor %}
                                 <button type="submit" class="btn btn-primary mt-2 float-end"><i class="fa fa-save"></i> Simpan</button>
                             </fieldset>
                         </form>
