@@ -1,9 +1,13 @@
+from hashlib import new
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .forms import UserAdminForm
+from .forms import UserAdminForm, UserRegistrationForm
 from django.contrib import messages
+from kendaraan.decorators import check_superadmin, check_admin_and_superadmin
+from .models import *
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url='login')
@@ -20,3 +24,63 @@ def account_setting(request):
         'form': form,
     }
     return render(request, 'account/account_setting.html', context)
+
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def user_register(request):
+    profil = UserAdmin.objects.all().order_by('-id')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(profil, 10)
+    
+    try:
+        profil = paginator.page(page)
+    except PageNotAnInteger:
+        profil = paginator.page(1)
+    except EmptyPage:
+        profil = paginator.page(paginator.num_pages)
+    context = {
+        'profil': profil,
+    }
+    return render(request, 'account/user_register.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def tambah_user(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        profil_form = UserAdminForm(request.POST)
+        if user_form.is_valid():
+            user = user_form.save(commit=False)
+            profil = profil_form.save(commit=False)
+            user.set_password(user_form.cleaned_data['password'])
+            user.profil = profil
+            user.save()
+            messages.info(request, 'Data berhasil disimpan')
+            return redirect('user_register')
+    user_form = UserRegistrationForm()
+    profil = UserAdminForm()
+    context = {
+        'user_form': user_form,
+        'profil_form': profil,
+    }
+    return render(request, 'account/tambah_user.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def detail_user(request, pk):
+    data_user = UserAdmin.objects.get(id=pk)
+    context = {
+        'data': data_user,
+    }
+    return render(request, 'account/detail_user.html', context)
+
+@login_required(login_url='login')
+@check_admin_and_superadmin
+def edit_user(request, pk):
+    return HttpResponse('edit user')
+
+@login_required(login_url='login')
+@check_superadmin
+def admin_system(request):
+    return HttpResponse('ini laman admin system, hanya untuk superadmin')

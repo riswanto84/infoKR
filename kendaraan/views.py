@@ -5,6 +5,10 @@ from ssl import create_default_context
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+from account.forms import UserRegistrationForm
+from account.models import UserAdmin
 
 from .decorators import check_superadmin, check_admin_and_superadmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -357,9 +361,5 @@ def edit_kendaraan(request, pk):
     }
     return render(request, 'kendaraan/edit_kendaraan.html', context)
 
-@login_required(login_url='login')
-@check_superadmin
-def admin_system(request):
-    return HttpResponse('ini laman admin system, hanya untuk superadmin')
 
 

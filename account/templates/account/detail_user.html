@@ -1,7 +1,7 @@
 {% extends "main.html" %}
 {% load static %}
 
-{% block title %}Detail Pegawai{% endblock %}
+{% block title %}Detail User{% endblock %}
 
 {% block content %}
 <div class="main-pages">
@@ -9,12 +9,12 @@
         <div class="d-block rounded shadow bg-white p-3">
             <div class="row">
                 <div class="col-12 navigator mb-4">
-                    <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> <i class="fa fa-caret-right"></i> <a href="{% url 'pegawai' %}" class="text-dark"> Pegawai </a> <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">Detail Informasi Pegawai </a></h6>
+                    <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> <i class="fa fa-caret-right"></i> <a href="{% url 'user_register' %}" class="text-dark"> User </a> <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">Detail User </a></h6>
                 </div>
             </div>
             <div class="row">
                 <div class="class col-lg-4 col-sm-12">
-                    <img class="img-thumbnail" src="{{ data.foto.url }}" alt="{{ data.foto }}">
+                    <img class="img-thumbnail" src="{{ data.profil_pic.url }}" alt="{{ data.foto }}">
                 </div>
                 <div class="class col-lg-8 col-sm-12">
                     <table class="table mb-5">
@@ -25,7 +25,15 @@
                             </tr>
                             <tr>
                                 <td>NIP / NIK</td>
-                                <td>{{ data.nip }}</td>
+                                {% if data.nip %}
+                                    <td>{{ data.nip }}</td>
+                                {% else %}
+                                    <td> - </td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td>Alamat Email</td>
+                                <td>{{ data.email }}</td>
                             </tr>
                             <tr>
                                 <td>Unit Kerja</td>
@@ -33,23 +41,11 @@
                             </tr>
                             <tr>
                                 <td>Nomor HP</td>
-                                <td>{{ data.nomor_hp }}</td>
+                                <td>{{ data.no_hp }}</td>
                             </tr>
                             <tr>
                                 <td>Email</td>
                                 <td>{{ data.email }}</td>
-                            </tr>
-                            <tr>
-                                <td>Alamat</td>
-                                <td>{{ data.alamat }}</td>
-                            </tr>
-                            <tr>
-                                <td>Kendaraan Terdaftar</td>
-                                <td>
-                                    {% for kendaraan in kendaraan_terdaftar %}
-                                       <a href="{% url 'detail_kendaraan' kendaraan.id %}" class="text-decoration-none"> <p class="font-monospace"> {{ forloop.counter }}. {{ kendaraan.merk_type }} {{ kendaraan.nomor_polisi }} </p></a>
-                                    {% endfor %}
-                                </td>
                             </tr>
                         </tbody>
                     </table>
