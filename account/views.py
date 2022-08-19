@@ -5,10 +5,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from .forms import UserAdminForm, UserRegistrationForm
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
+from .forms import *
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from kendaraan.decorators import check_superadmin, check_admin_and_superadmin
 from .models import *
 from kendaraan.models import Pegawai, Kendaraan
@@ -222,7 +221,7 @@ def edit_useradmin(request, pk):
 @login_required(login_url='login')
 def ubah_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = UbahPasswordForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
@@ -231,7 +230,7 @@ def ubah_password(request):
         else:
             messages.error(request, 'Terjadi kesalahan.')
     else:
-        form = PasswordChangeForm(request.user)
+        form = UbahPasswordForm(request.user)
     context = {
         'form': form,
     }
