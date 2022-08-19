@@ -20,4 +20,7 @@ urlpatterns = [
     path('account/admin_system', views.admin_system, name='admin_system'),
     path('account/detail_user/<str:pk>', views.detail_user, name='detail_user'),
     path('account/edit_user/<str:pk>', views.edit_user, name='edit_user'),
+    path('account/detail_useradmin/<str:pk>', views.detail_useradmin, name='detail_useradmin'),
+    path('account/edit_useradmin/<str:pk>', views.edit_useradmin, name='edit_useradmin'),
+    path('account/ubah_password', views.ubah_password, name='ubah_password'),
 ]

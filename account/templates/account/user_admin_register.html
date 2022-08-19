@@ -2,7 +2,7 @@
 {% load static %}
 {% load humanize %}
 
-{% block title %}Data User{% endblock %}
+{% block title %}Data User Admin{% endblock %}
 
 {% block content %}
 
@@ -38,7 +38,7 @@
                     <div class="d-block rounded shadow bg-white p-3">
                         <div class="row">
                             <div class="col-12 navigator mb-2">
-                                <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">User </a></h6>
+                                <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> <i class="fa fa-caret-right"></i> <a href="#" class="text-muted">User Admin</a></h6>
                                 <hr>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                             {% csrf_token %}
                             <div class="row g-3 align-items-center float-start mb-2 mt-3">
                                 <span id="tambahPegawai" class="form-text">
-                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus-square fa-sm box-icon" aria-hidden="true"></i> Tambah User</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus-square fa-sm box-icon" aria-hidden="true"></i> Tambah User Admin</button>
                                 </span>
                             </div>
                         </form>
@@ -91,8 +91,8 @@
                                     <td>{{ data.user.username }}</td>
                                     <td>
                                         <div>
-                                            <a class="btn btn-success btn-sm mr-1 mb-1" href="{% url 'detail_user' data.id %}" role="button"><i class="fa fa-eye"> </i></a>
-                                            <a class="btn btn-warning btn-sm mr-1 mb-1" href="{% url 'edit_user' data.id %}" role="button"><i class="fa fa-pencil"> </i></a>
+                                            <a class="btn btn-success btn-sm mr-1 mb-1" href="{% url 'detail_useradmin' data.id %}" role="button"><i class="fa fa-eye"> </i></a>
+                                            <a class="btn btn-warning btn-sm mr-1 mb-1" href="{% url 'edit_useradmin' data.id %}" role="button"><i class="fa fa-pencil"> </i></a>
                                         </div>
                                     </td>
                                 </tr>

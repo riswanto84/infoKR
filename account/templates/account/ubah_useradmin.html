@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %}Ubah Data User{% endblock %}
+{% block title %}Ubah Data User Admin{% endblock %}
 
 {% block content %}
     <div class="main-pages">
@@ -15,14 +15,14 @@
                             <div class="col-12 navigator mb-4">
                                 <h6><a href="{% url 'dashboard' %}" class="text-dark"> Beranda </a> 
                                     <i class="fa fa-caret-right"></i> 
-                                    <a href="{% url 'user_register' %}" class="text-dark"> User </a> 
-                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Ubah User </a></h6>
+                                    <a href="{% url 'admin_system' %}" class="text-dark"> User </a> 
+                                    <i class="fa fa-caret-right"></i><a href="#" class="text-muted"> Ubah user admin</a></h6>
                                 <hr>
                             </div>
                         </div>
                         <form action="" class="row g-3" method="post" enctype="multipart/form-data">
                             <fieldset>
-                                <legend class="text-center mb-4">Ubah Data User</legend>
+                                <legend class="text-center mb-4">Ubah Data User Admin</legend>
                                     {{ user_form|crispy }}
                                     {{ profil_form|crispy }}
                                     {% csrf_token %}
