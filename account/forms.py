@@ -18,6 +18,7 @@ class UserAdminForm(ModelForm):
         labels = {
             'nama': _('Nama Lengkap'),
             'no_hp': _('Nomor HP'),
+            'nip': _('Masukan NIP / NIK'),
             'email': _('Alamat Email'),
             'profil_pic': _('Foto Profil'),
         }

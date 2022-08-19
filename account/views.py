@@ -128,7 +128,34 @@ def detail_user(request, pk):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def edit_user(request, pk):
-    return HttpResponse('edit user')
+    # return HttpResponse(pk)
+    user = UserAdmin.objects.get(id=pk)
+    username = User.objects.get(id=user.user_id)
+    user_form = UserRegistrationForm(instance=username)
+    profil_form = UserAdminForm(instance=user)
+    
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST, instance=username)
+        profil_form = UserAdminForm(request.POST, request.FILES, instance=user)
+        if user_form.is_valid() and profil_form.is_valid():
+            user = user_form.save(commit=False)
+            password = user_form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+            
+            group = Group.objects.get(name='user')
+            user.groups.add(group)
+            profil = profil_form.save(commit=False)
+            profil.user = user
+            profil.save()
+            messages.info(request, 'Data berhasil diubah')
+            return redirect('user_register')
+    
+    context = {
+        'user_form': user_form,
+        'profil_form': profil_form,
+    }
+    return render(request, 'account/ubah_user.html', context)
 
 @login_required(login_url='login')
 @check_superadmin
