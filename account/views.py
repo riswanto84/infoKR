@@ -8,6 +8,7 @@ from .forms import UserAdminForm, UserRegistrationForm
 from django.contrib import messages
 from kendaraan.decorators import check_superadmin, check_admin_and_superadmin
 from .models import *
+from kendaraan.models import Pegawai, Kendaraan
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -35,14 +36,55 @@ def user_register(request):
     paginator = Paginator(profil, 10)
     allert = 'alert-success'
     
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
     try:
         profil = paginator.page(page)
     except PageNotAnInteger:
         profil = paginator.page(1)
     except EmptyPage:
         profil = paginator.page(paginator.num_pages)
+    
+    if request.method == 'POST':
+        user_keyword = request.POST['keyword']
+        if user_keyword == '':
+            messages.info(request, 'Kolom pencarian tidak boleh kosong!')
+            allert = 'alert-danger'
+            context = {
+                'profil': profil,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'account/user_register.html', context)
+        
+        query_profil = UserAdmin.objects.filter(nama__contains=user_keyword)
+        if query_profil:
+            messages.info(request, 'Data User ditemukan.')
+            allert = 'alert-success'
+            context = {
+                'profil': query_profil,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'account/user_register.html', context)
+        else:
+            messages.info(request, 'Data User tidak ditemukan!')
+            allert = 'alert-danger'
+            context = {
+                'profil': query_profil,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'account/user_register.html', context)
+    
     context = {
         'profil': profil,
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
         'allert': allert,
     }
     return render(request, 'account/user_register.html', context)

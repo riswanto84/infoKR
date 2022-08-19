@@ -38,7 +38,6 @@ def dashboard(request):
     if request.method == 'POST':
         nopol_keyword = request.POST['keyword']
         if nopol_keyword == '':
-            # return HttpResponse('keyword tidak boleh kosong')
             messages.info(request, 'Kolom pencarian tidak boleh kosong!')
             allert = 'alert-danger'
             context = {
