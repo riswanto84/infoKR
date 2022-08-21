@@ -7,6 +7,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+import qrcode
+import qrcode.image.svg
+from io import BytesIO
+
 from account.forms import UserRegistrationForm
 from account.models import UserAdmin
 
@@ -82,9 +86,17 @@ def detail_kendaraan(request, pk):
     kendaraan = Kendaraan.objects.get(id=pk)
     id_kendaraan = kendaraan.id
     foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
+    factory = qrcode.image.svg.SvgImage
+    url_path = request.build_absolute_uri()
+    qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
+    stream = BytesIO()
+    qrcode_img.save(stream)
+    qrcode_file = stream.getvalue().decode()
+    
     context = {
         'detail_kendaraan': kendaraan,
         'foto_kendaraan': foto_kendaraan,
+        'qrcode': qrcode_file,
     }
     return render(request, 'kendaraan/detail_kendaraan.html', context)
 

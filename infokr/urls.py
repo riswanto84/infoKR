@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('adminkr/', admin.site.urls),
     path('', include('account.urls')),
 
     # path kendaraan

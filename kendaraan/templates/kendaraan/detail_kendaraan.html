@@ -18,39 +18,52 @@
                         <tbody>
                             <tr>
                                 <td class="col-4">Nomor Polisi</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.nomor_polisi }}</td>
                             </tr>
                             <tr>
                                 <td>Pemilik</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.pemilik.nama }}</td>
                             </tr>
                             <tr>
                                 <td>Unit Kerja</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.pemilik.unit_kerja }}</td>
                             </tr>
                             <tr>
                                 <td>Nomor HP</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.pemilik.nomor_hp }}</td>
                             </tr>
                             <tr>
                                 <td>Jenis Kendaraan</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.jenis_kendaraan }}</td>
                             </tr>
                             <tr>
                                 <td>Merk</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.merk_type }}</td>
                             </tr>
                             <tr>
                                 <td>Warna</td>
+                                <td>:</td>
                                 <td>{{ detail_kendaraan.warna }}</td>
                             </tr>
                             <tr>
                                 <td class="mb-4">Keterangan</td>
+                                <td>:</td>
                                 {% if detail_kendaraan.keterangan %}
                                     <td>{{ detail_kendaraan.keterangan }}</td>
                                 {% else %}
                                     <td>-</td>
                                 {% endif %}
+                            </tr>
+                            <tr>
+                                <td>QR Code Kendaraan</td>
+                                <td></td>
+                                <td>{{ qrcode|safe }}</td>
                             </tr>
                         </tbody>
                     </table>
