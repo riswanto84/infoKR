@@ -53,4 +53,11 @@ class FotoKendaraanForm(ModelForm):
         model = FotoKendaraan
         fields = ("foto_kendaraan",)
     
-    
+class SatkerForm(ModelForm):
+    class Meta:
+        model = UnitKerja
+        fields = '__all__'
+
+        labels = {
+            'nama_unit': _('Nama Satker'),
+        }

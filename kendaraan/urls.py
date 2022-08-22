@@ -18,4 +18,8 @@ urlpatterns = [
     path('kendaraan_app/detail_kendaraan_admin/<str:pk>', views.detail_kendaraan_admin, name='detail_kendaraan_admin'),
     path('kendaraan_app/edit_kendaraan/<str:pk>', views.edit_kendaraan, name='edit_kendaraan'),
     
+    # satker
+    path('kendaraan_app/satker', views.satker, name='satker'),
+    path('kendaraan_app/tambah_satker', views.tambah_satker, name='tambah_satker'),
+    path('kendaraan_app/ubah_satker/<str:pk>', views.ubah_satker, name='ubah_satker'),
 ]

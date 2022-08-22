@@ -91,6 +91,9 @@
                             <a class="nav-link px-3" href="{% url 'user_register' %}">
                                 <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Pengguna
                             </a>
+                            <a class="nav-link px-3" href="{% url 'satker' %}">
+                                <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Satker
+                            </a>
                         {% endif %}
                     {% endfor %}
                     {% for group in request.user.groups.all %}

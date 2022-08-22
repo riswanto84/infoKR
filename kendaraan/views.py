@@ -166,6 +166,107 @@ def pegawai(request):
 
 @check_admin_and_superadmin
 @login_required(login_url='login')
+def satker(request):
+    satker_list = UnitKerja.objects.all().order_by('id')
+    page = request.GET.get('page', 1)
+    
+    allert = 'alert-success'
+    
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
+    
+    paginator = Paginator(satker_list, 10)
+    try:
+        satker = paginator.page(page)
+    except PageNotAnInteger:
+        satker = paginator.page(1)
+    except EmptyPage:
+        satker = paginator.page(paginator.num_pages)
+    
+    if request.method == 'POST':
+        satker_keyword = request.POST['keyword']
+        if satker_keyword == '':
+            messages.info(request, 'Kolom pencarian tidak boleh kosong!')
+            allert = 'alert-danger'
+            context = {
+                'satker': satker,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/satker.html', context)
+        
+        query_satker = UnitKerja.objects.filter(nama_unit__contains=satker_keyword)
+        if query_satker:
+            messages.info(request, 'Data satker ditemukan.')
+            allert = 'alert-success'
+            context = {
+                'satker': query_satker,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/satker.html', context)
+        else:
+            messages.info(request, 'Data satker tidak ditemukan!')
+            allert = 'alert-danger'
+            context = {
+                'kendaraan': query_satker,
+                'jumlah_pegawai': jumlah_pegawai,
+                'jumlah_kendaraan': jumlah_kendaraan,
+                'allert': allert,
+            }
+            return render(request, 'kendaraan/satker.html', context)
+        
+    
+    context = {
+        'satker': satker,
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'allert': allert,
+    }
+    return render(request, 'kendaraan/satker.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
+def tambah_satker(request):
+    jumlah_pegawai = Pegawai.objects.count()
+    jumlah_kendaraan = Kendaraan.objects.count()
+    
+    form = SatkerForm
+    if request.method == 'POST':
+        form = SatkerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.info(request, 'Data Satker berhasil disimpan')
+            return redirect('satker')
+    context = {
+        'jumlah_pegawai': jumlah_pegawai,
+        'jumlah_kendaraan': jumlah_kendaraan,
+        'form': form,
+    }
+    return render(request, 'kendaraan/tambah_satker.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
+def ubah_satker(request, pk):
+    satker = UnitKerja.objects.get(id=pk)
+    form = SatkerForm(instance=satker)
+    
+    if request.method == 'POST':
+        form = SatkerForm(request.POST, request.FILES, instance=satker)
+        form.save()
+        messages.info(request, 'Data Satker berhasil diubah')
+        return redirect('satker')
+    
+    context = {
+        'form': form,
+    }
+    return render(request, 'kendaraan/ubah_satker.html', context)
+
+@check_admin_and_superadmin
+@login_required(login_url='login')
 def tambah_pegawai(request):
     jumlah_pegawai = Pegawai.objects.count()
     jumlah_kendaraan = Kendaraan.objects.count()
@@ -339,9 +440,17 @@ def detail_kendaraan_admin(request, pk):
     kendaraan = Kendaraan.objects.get(id=pk)
     id_kendaraan = kendaraan.id
     foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
+    factory = qrcode.image.svg.SvgImage
+    url_path = request.build_absolute_uri()
+    qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
+    stream = BytesIO()
+    qrcode_img.save(stream)
+    qrcode_file = stream.getvalue().decode()
+
     context = {
         'detail_kendaraan': kendaraan,
         'foto_kendaraan': foto_kendaraan,
+        'qrcode': qrcode_file,
     }
     return render(request, 'kendaraan/detail_kendaraan_admin.html', context)
 
