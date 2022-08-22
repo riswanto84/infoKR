@@ -47,11 +47,12 @@ class KendaraanForm(ModelForm):
         
         
 class FotoKendaraanForm(ModelForm):
-    foto_kendaraan = forms.ImageField(label="Foto", widget=forms.ClearableFileInput(attrs={"multiple": True}),)
+    # foto_kendaraan = forms.ImageField(label="Foto", widget=forms.ClearableFileInput(attrs={"multiple": True}),)
     
     class Meta:
         model = FotoKendaraan
-        fields = ("foto_kendaraan",)
+        # fields = ("foto_kendaraan",)
+        fields = ['foto_kendaraan']
     
 class SatkerForm(ModelForm):
     class Meta:

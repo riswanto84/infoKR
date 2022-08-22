@@ -34,15 +34,15 @@ class Kendaraan(models.Model):
     )
 
     WARNA = (
+        ('Hitam', 'Hitam'),
+        ('Silver', 'Silver'),
+        ('Putih', 'Putih'),
         ('Abu-abu', 'Abu-Abu'),
         ('Biru', 'Biru'),
         ('Coklat', 'Coklat'),
-        ('Hitam', 'Hitam'),
         ('Hijau', 'Hijau'),
         ('Merah', 'Merah'),
-        ('Putih', 'Putih'),
         ('Kuning', 'Kuning'),
-        ('Silver', 'Silver'),
         ('Lainnya', 'Lainnya'),
     )
     nomor_polisi = models.CharField(max_length=10, blank=False, null=False)
