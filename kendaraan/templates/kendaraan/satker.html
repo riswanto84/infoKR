@@ -104,10 +104,10 @@
                                 {% endif %}
                                 {% for i in satker.paginator.page_range %}
                                     {% if satker.number == i %}
-                                        <li class="page-item active" aria-current="page"><a class="page-link" href="#">{{i}}</a></li>
-                                    {% else %}
+                                        <li class="page-item active" aria-current="page"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% elif i > satker.number|add:'-3' and i < satker.number|add:'3' %}
                                         <li class="page-item"><a class="page-link" href="?page={{ i }}">{{i}}</a></li>
-                                    {% endif %}
+                                     {% endif %}
                                 {% endfor %}
                                 {% if satker.has_next %}
                                   <li class="page-item"><a class="page-link" href="?page={{ satker.next_page_number }}">Next</a></li>

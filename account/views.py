@@ -2,7 +2,7 @@ from hashlib import new
 from multiprocessing import context
 from tokenize import group
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from .forms import *
@@ -122,11 +122,14 @@ def tambah_user(request):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def detail_user(request, pk):
-    data_user = UserAdmin.objects.get(id=pk)
-    context = {
-        'data': data_user,
-    }
-    return render(request, 'account/detail_user.html', context)
+    try: 
+        data_user = UserAdmin.objects.get(id=pk)
+        context = {
+            'data': data_user,
+        }
+        return render(request, 'account/detail_user.html', context)
+    except:
+        raise Http404
 
 @login_required(login_url='login')
 @check_admin_and_superadmin

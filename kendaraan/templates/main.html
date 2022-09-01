@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>infoKR versi 1.0</title>
-    <link rel="icon" type="image/png" href="{% static 'ui-template-1/images/favicon.ico' %}"/>
+    <link rel="icon" type="image/png" href="https://simpeg.kemensos.go.id/assets/ico/favicon.ico"/>
 
     <link rel="stylesheet" href="{% static 'ui-template-1/' %}assets/app/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'ui-template-1/assets/icons/css/font-awesome.min.css' %}">
@@ -89,7 +89,7 @@
                         {% if group.name == 'superadmin' or group.name == 'admin' %}
                             <hr class="soft my-1 bg-white">
                             <a class="nav-link px-3" href="{% url 'user_register' %}">
-                                <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Pengguna
+                                <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>User
                             </a>
                             <a class="nav-link px-3" href="{% url 'satker' %}">
                                 <i class="fa fa-id-card fa-lg box-icon" aria-hidden="true"></i>Satker

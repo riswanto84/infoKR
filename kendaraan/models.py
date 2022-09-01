@@ -48,7 +48,7 @@ class Kendaraan(models.Model):
     nomor_polisi = models.CharField(max_length=10, blank=False, null=False)
     jenis_kendaraan = models.CharField(max_length=200, choices=CATEGORY)
     pemilik = models.ForeignKey(Pegawai, on_delete=models.CASCADE)
-    warna = models.CharField(max_length=200, choices=WARNA)
+    warna = models.CharField(max_length=200, choices=WARNA, default='Lainnya')
     merk_type = models.CharField(max_length=300, blank=True, null=True)
     keterangan = models.TextField(blank=True, null=True)
     

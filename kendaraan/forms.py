@@ -37,6 +37,7 @@ class KendaraanForm(ModelForm):
         labels = {
             'nomor_polisi': _('Nomor Polisi'),
             'jenis_kendaraan': _('Jenis Kendaraan'),
+            'pemilik': _('Pemilik/Pengguna'),
         }
     
     def __init__(self, *args, **kwargs):

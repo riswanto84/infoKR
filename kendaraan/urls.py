@@ -10,7 +10,7 @@ urlpatterns = [
     path('kendaraan_app/hapus_pegawai/<str:pk>', views.hapus_pegawai, name='hapus_pegawai'),
     
     # url kendaraan
-    path('kendaraan_app/', views.dashboard, name='dashboard'),
+    path('', views.dashboard, name='dashboard'),
     path('kendaraan_app/detail_kendaraan/<str:pk>', views.detail_kendaraan, name='detail_kendaraan'),
     path('kendaraan_app/data_kendaraan', views.kendaraan, name='kendaraan'),
     path('kendaraan_app/tambah_kendaraan', views.tambah_kendaraan, name='tambah_kendaraan'),

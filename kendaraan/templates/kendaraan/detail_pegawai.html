@@ -47,7 +47,7 @@
                                 <td>Kendaraan Terdaftar</td>
                                 <td>
                                     {% for kendaraan in kendaraan_terdaftar %}
-                                       <a href="{% url 'detail_kendaraan' kendaraan.id %}" class="text-decoration-none"> <p class="font-monospace"> {{ forloop.counter }}. {{ kendaraan.merk_type }} {{ kendaraan.nomor_polisi }} </p></a>
+                                       <a href="{% url 'detail_kendaraan' kendaraan.id %}" class="text-decoration-none link-dark"> <p>{{ kendaraan.merk_type }} {{ kendaraan.nomor_polisi }} </p></a>
                                     {% endfor %}
                                 </td>
                             </tr>

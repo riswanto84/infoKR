@@ -3,7 +3,7 @@ from multiprocessing import context
 from operator import and_
 from ssl import create_default_context
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -83,27 +83,30 @@ def dashboard(request):
 
 @login_required(login_url='login')
 def detail_kendaraan(request, pk):
-    kendaraan = Kendaraan.objects.get(id=pk)
-    id_kendaraan = kendaraan.id
-    foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
-    factory = qrcode.image.svg.SvgImage
-    url_path = request.build_absolute_uri()
-    qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
-    stream = BytesIO()
-    qrcode_img.save(stream)
-    qrcode_file = stream.getvalue().decode()
-    
-    context = {
-        'detail_kendaraan': kendaraan,
-        'foto_kendaraan': foto_kendaraan,
-        'qrcode': qrcode_file,
-    }
-    return render(request, 'kendaraan/detail_kendaraan.html', context)
+    try:
+        kendaraan = Kendaraan.objects.get(id=pk)
+        id_kendaraan = kendaraan.id
+        foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
+        factory = qrcode.image.svg.SvgImage
+        url_path = request.build_absolute_uri()
+        qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
+        stream = BytesIO()
+        qrcode_img.save(stream)
+        qrcode_file = stream.getvalue().decode()
+        
+        context = {
+            'detail_kendaraan': kendaraan,
+            'foto_kendaraan': foto_kendaraan,
+            'qrcode': qrcode_file,
+        }
+        return render(request, 'kendaraan/detail_kendaraan.html', context)
+    except:
+        raise Http404
 
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def pegawai(request):
-    pegawai_list = Pegawai.objects.all().order_by('id')
+    pegawai_list = Pegawai.objects.all().order_by('-id')
     page = request.GET.get('page', 1)
     
     allert = 'alert-success'
@@ -251,19 +254,22 @@ def tambah_satker(request):
 @check_admin_and_superadmin
 @login_required(login_url='login')
 def ubah_satker(request, pk):
-    satker = UnitKerja.objects.get(id=pk)
-    form = SatkerForm(instance=satker)
-    
-    if request.method == 'POST':
-        form = SatkerForm(request.POST, request.FILES, instance=satker)
-        form.save()
-        messages.info(request, 'Data Satker berhasil diubah')
-        return redirect('satker')
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'kendaraan/ubah_satker.html', context)
+    try:
+        satker = UnitKerja.objects.get(id=pk)
+        form = SatkerForm(instance=satker)
+        
+        if request.method == 'POST':
+            form = SatkerForm(request.POST, request.FILES, instance=satker)
+            form.save()
+            messages.info(request, 'Data Satker berhasil diubah')
+            return redirect('satker')
+        
+        context = {
+            'form': form,
+        }
+        return render(request, 'kendaraan/ubah_satker.html', context)
+    except:
+        raise Http404
 
 @check_admin_and_superadmin
 @login_required(login_url='login')
@@ -288,14 +294,17 @@ def tambah_pegawai(request):
 @check_admin_and_superadmin
 @login_required(login_url='login')
 def detail_pegawai(request, pk):
-    data = Pegawai.objects.get(id=pk)
-    kendaraan_terdaftar = Kendaraan.objects.filter(pemilik_id=data.id)
-    
-    context = {
-        'data': data,
-        'kendaraan_terdaftar': kendaraan_terdaftar,
-    }
-    return render(request, 'kendaraan/detail_pegawai.html', context)
+    try:
+        data = Pegawai.objects.get(id=pk)
+        kendaraan_terdaftar = Kendaraan.objects.filter(pemilik_id=data.id)
+        
+        context = {
+            'data': data,
+            'kendaraan_terdaftar': kendaraan_terdaftar,
+        }
+        return render(request, 'kendaraan/detail_pegawai.html', context)
+    except:
+        raise Http404
 
 @check_admin_and_superadmin
 @login_required(login_url='login')
@@ -437,22 +446,25 @@ def hapus_kendaraan(request, pk):
 @login_required(login_url='login')
 @check_admin_and_superadmin
 def detail_kendaraan_admin(request, pk):
-    kendaraan = Kendaraan.objects.get(id=pk)
-    id_kendaraan = kendaraan.id
-    foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
-    factory = qrcode.image.svg.SvgImage
-    url_path = request.build_absolute_uri()
-    qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
-    stream = BytesIO()
-    qrcode_img.save(stream)
-    qrcode_file = stream.getvalue().decode()
+    try:
+        kendaraan = Kendaraan.objects.get(id=pk)
+        id_kendaraan = kendaraan.id
+        foto_kendaraan = FotoKendaraan.objects.filter(nomor_polisi_id=id_kendaraan)
+        factory = qrcode.image.svg.SvgImage
+        url_path = request.build_absolute_uri()
+        qrcode_img = qrcode.make((url_path), image_factory=factory, box_size=10)
+        stream = BytesIO()
+        qrcode_img.save(stream)
+        qrcode_file = stream.getvalue().decode()
 
-    context = {
-        'detail_kendaraan': kendaraan,
-        'foto_kendaraan': foto_kendaraan,
-        'qrcode': qrcode_file,
-    }
-    return render(request, 'kendaraan/detail_kendaraan_admin.html', context)
+        context = {
+            'detail_kendaraan': kendaraan,
+            'foto_kendaraan': foto_kendaraan,
+            'qrcode': qrcode_file,
+        }
+        return render(request, 'kendaraan/detail_kendaraan_admin.html', context)
+    except:
+        raise Http404
 
 @login_required(login_url='login')
 @check_admin_and_superadmin
@@ -480,6 +492,3 @@ def edit_kendaraan(request, pk):
         'formset': formset,
     }
     return render(request, 'kendaraan/edit_kendaraan.html', context)
-
-
-
